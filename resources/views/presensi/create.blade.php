@@ -6,7 +6,7 @@
         @csrf
         <div class="mb-3">
             <label for="tanggal_presensi" class="form-label">Tanggal Presensi</label>
-            <input type="text" class="form-control" name="tanggal_presensi" value="{{ Session::get('tanggal_presensi') }}">
+            <input type="date" class="form-control" name="tanggal_presensi" value="{{ Session::get('tanggal_presensi') }}">
         </div>
         <div class="mb-3">
             <label for="nama_mhs" class="form-label">Nama Mahasiswa</label>
