@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\presensi;
+use Barryvdh\DomPDF\Facade\PDF;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 
@@ -16,9 +17,17 @@ class Presensicontroller extends Controller
     public function index()
     {
         //
-        // $data = presensi::all();
-        $data = presensi::orderBy('nim_mhs', 'desc')->paginate(2);
-        return view('presensi.index')->with('data', $data);
+        $data = presensi::all();
+        $data = presensi::orderBy('nim_mhs', 'desc')->paginate(10);
+        return view('presensi/index')->with('data', $data);
+    }
+
+    public function cetak_pdf()
+    {
+    	$data = presensi::all();
+        view()->share('data',$data);
+    	$pdf = PDF::loadview('presensi.presensi_pdf');
+    	return $pdf->download('Presensi.pdf');
     }
 
     /**
@@ -29,7 +38,7 @@ class Presensicontroller extends Controller
     public function create()
     {
         //
-        return view('presensi.create');
+        return view('presensi/create');
     }
 
     /**
@@ -79,7 +88,7 @@ class Presensicontroller extends Controller
         //
          // return "<h1>Saya mahasiswa dari STMIK dengan nim $id </h1>";
          $data = presensi::where('nim_mhs',$id)->first();
-         return view('presensi.show')->with('data',$data);
+         return view('presensi/show')->with('data',$data);
     }
 
     /**

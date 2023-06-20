@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\Layout;
 use App\Http\Controllers\Presensicontroller;
+use App\Http\Controllers\SessionController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,10 +17,23 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('/sesi/index');
 });
 
 
-Route::resource('presensi',Presensicontroller::class);
-Route::get('presensi',[Presensicontroller::class,'index']);
+Route::resource('presensi',Presensicontroller::class)->middleware('isLogin');
+Route::get('presensi',[Presensicontroller::class,'index'])->middleware('isLogin');
 Route::get('presensi/{id}',[Presensicontroller::class,'detail']);
+Route::get('/cetak_pdf', [Presensicontroller::class, 'cetak_pdf'])->name('cetak_pdf');
+
+Route::get('/sesi',[SessionController::class, 'index'])->middleware('isTamu');
+Route::post('/sesi/login',[SessionController::class, 'login'])->middleware('isTamu');
+Route::get('/sesi/logout',[SessionController::class, 'logout']);
+Route::get('/sesi/register',[SessionController::class, 'register'])->middleware('isTamu');
+Route::post('/sesi/create',[SessionController::class, 'create'])->middleware('isTamu');
+
+Route::controller(Layout::class)->group(function(){
+    Route::get('/layout/home', 'home')->middleware('isLogin');
+    Route::get('/layout/index', 'index')->middleware('isLogin');
+});
+
