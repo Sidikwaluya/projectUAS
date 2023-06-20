@@ -12,6 +12,9 @@
 </head>
 <body>
 <div class="container py-5">
+    @if (Auth::check())
+    @include('notifikasi/menu')
+    @endif
     @include('notifikasi/pesan')
     @yield('kontent')
 </div>
